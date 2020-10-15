@@ -1,0 +1,24 @@
+import os
+import boto3
+import datetime
+from dateutil.tz import tzlocal
+
+kms = boto3.client('kms')
+Desc = 'Development key24'
+usg = 'ENCRYPT_DECRYPT'
+Alias_Name = 'alias/projectKey1'
+
+def lambda_handler(event, context):
+    key = kms.create_key(
+       Description=Desc,
+       KeyUsage=usg
+    )
+    for k,v in key.items():
+        ID = v.get('KeyId')
+        
+#def lambda_handlera(event, context):
+    alias = kms.create_alias(
+        AliasName='Alias_Name',
+        TargetKeyId=str(ID)
+        )
+    print('Done')
